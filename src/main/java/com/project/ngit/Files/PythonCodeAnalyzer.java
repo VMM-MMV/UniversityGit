@@ -10,11 +10,11 @@ class PythonCodeAnalyzer extends CodeAnalyzer {
         super(filePath);
     }
 
-    public int countClasses() {
+    public int getClassCount() {
         return countOccurrences(CLASS_REGEX);
     }
 
-    public int countMethods() {
+    public int getMethodCount() {
         return countOccurrences(METHOD_REGEX);
     }
 }

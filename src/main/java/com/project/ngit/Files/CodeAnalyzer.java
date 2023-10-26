@@ -5,8 +5,8 @@ import java.nio.file.*;
 import java.io.IOException;
 
 public abstract class CodeAnalyzer extends GeneralFile {
-    public abstract int countClasses();
-    public abstract int countMethods();
+    public abstract int getClassCount();
+    public abstract int getMethodCount();
 
     protected String code;
 
@@ -49,8 +49,8 @@ public abstract class CodeAnalyzer extends GeneralFile {
             throw new IllegalArgumentException("Unsupported file type");
         }
 
-        System.out.println("Number of classes: " + analyzer.countClasses());
-        System.out.println("Number of methods: " + analyzer.countMethods());
+        System.out.println("Number of classes: " + analyzer.getClassCount());
+        System.out.println("Number of methods: " + analyzer.getMethodCount());
         System.out.println(analyzer.getLineCount());
     }
 }

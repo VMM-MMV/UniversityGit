@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class TXTFile {
+public class TXTFile extends GeneralFile{
     int lineCount = 0;
     int wordCount = 0;
     int charCount = 0;
@@ -15,7 +15,7 @@ public class TXTFile {
         System.out.println(txtFile.getCharCount() + " " + txtFile.getWordCount() + " " + txtFile.getLineCount());
     }
 
-    public TXTFile (File file) {
+    public TXTFile(File file) {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;

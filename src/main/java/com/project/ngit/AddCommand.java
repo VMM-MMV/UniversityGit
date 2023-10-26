@@ -26,7 +26,7 @@ public class AddCommand {
             try (Stream<Path> stream = Files.walk(Path.of(repositoryPath))) {
 
                 stream.forEach(path -> {
-                    FileTime lastModifiedTime = NgitApplication.getLastModifiedTime(path);
+                    FileTime lastModifiedTime = DgitApplication.getLastModifiedTime(path);
                     System.out.println(path + " last modified: " + lastModifiedTime);
                     existingData.put(path.toString(), lastModifiedTime.toString());
                 });
@@ -36,7 +36,7 @@ public class AddCommand {
             }
         } else {
             Path filePath = ngitPath.resolve(argument);
-            FileTime lastModifiedTime = NgitApplication.getLastModifiedTime(filePath);
+            FileTime lastModifiedTime = DgitApplication.getLastModifiedTime(filePath);
             System.out.println(ngitPath + " last modified: " + lastModifiedTime);
             existingData.put(filePath.toString(), lastModifiedTime.toString());
         }

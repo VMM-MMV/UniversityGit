@@ -9,18 +9,18 @@ import java.nio.file.attribute.FileTime;
 import java.util.Arrays;
 import java.nio.file.attribute.BasicFileAttributes;
 
-public class NgitApplication {
+public class DgitApplication {
 	final static String GLOBAL_REPOSITORY_NAME = System.getProperty("user.dir");
 
 	public static void main(String[] args) {
-		NgitApplication gitClone = new NgitApplication();
+		DgitApplication gitClone = new DgitApplication();
 		gitClone.processCommand(args);
 	}
 
 	private void processCommand(String[] input) {
 		System.out.println(Arrays.toString(input));
 
-		if (input.length < 2) {return; }
+		if (input.length < 1) {return; }
 
 		String command = input[0];
 		String argument = input[1];

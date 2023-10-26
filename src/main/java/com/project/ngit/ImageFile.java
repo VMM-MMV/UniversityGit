@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class ImageFile extends GeneralFile{
+
     public static Dimension getImageProportions(String imagePath) {
         if (!Files.exists(Paths.get(imagePath))) {
             System.out.println("No such path");

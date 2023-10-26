@@ -16,7 +16,6 @@ public class TXTFile extends GeneralFile{
     }
 
     public TXTFile(File file) {
-
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {

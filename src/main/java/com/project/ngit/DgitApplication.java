@@ -23,7 +23,7 @@ public class DgitApplication {
 		if (input.length < 1) {return; }
 
 		String command = input[0];
-		String argument = input[1];
+		String argument = (input.length > 1) ? input[1] : null;
 
 		switch (command) {
 			case "init" ->  InitCommand.execute(GLOBAL_REPOSITORY_NAME);

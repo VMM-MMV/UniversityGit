@@ -8,11 +8,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class ImageFile extends GeneralFile{
+    private Dimension dimensions;
 
-    public static Dimension getImageProportions(String imagePath) {
+    public ImageFile(String imagePath) {
         if (!Files.exists(Paths.get(imagePath))) {
             System.out.println("No such path");
-            return new Dimension(-1,-1);
+            this.dimensions = new Dimension(-1, -1);
+            return;
         }
 
         try {
@@ -25,15 +27,20 @@ public class ImageFile extends GeneralFile{
             int width = image.getWidth();
             int height = image.getHeight();
 
-            return new Dimension(width, height);
+            this.dimensions = new Dimension(width, height);
         } catch (IOException e) {
             e.printStackTrace();
-            return new Dimension(-1, -1);
+            this.dimensions = new Dimension(-1, -1);
         }
     }
 
+    public Dimension getDimensions() {
+        return this.dimensions;
+    }
+
     public static void main(String[] args) {
-        Dimension dimension = getImageProportions("C:\\Users\\Miguel\\Downloads\\1.txt");
+        ImageFile imageFile = new ImageFile("C:\\Users\\Miguel\\Downloads\\1.txt");
+        Dimension dimension = imageFile.getDimensions();
         System.out.println(dimension.width + " x " + dimension.height);
     }
 }

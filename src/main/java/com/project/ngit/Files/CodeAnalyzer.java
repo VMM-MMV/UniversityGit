@@ -4,7 +4,7 @@ import java.util.regex.*;
 import java.nio.file.*;
 import java.io.IOException;
 
-public abstract class CodeAnalyzer {
+public abstract class CodeAnalyzer extends GeneralFile {
     public abstract int countClasses();
     public abstract int countMethods();
 
@@ -25,19 +25,32 @@ public abstract class CodeAnalyzer {
         return count;
     }
 
-    public static void main(String[] args) throws IOException {
+    public int getLineCount() {
+        return (int) code.lines().count();
+    }
+
+    public static void main(String[] args) {
         String filePath = "C:\\Users\\Miguel\\Downloads\\1.java";  // Replace with your file path
         CodeAnalyzer analyzer;
 
         if (filePath.endsWith(".py")) {
-            analyzer = new PythonCodeAnalyzer(filePath);
+            try {
+                analyzer = new PythonCodeAnalyzer(filePath);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else if (filePath.endsWith(".java")) {
-            analyzer = new JavaCodeAnalyzer(filePath);
+            try {
+                analyzer = new JavaCodeAnalyzer(filePath);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             throw new IllegalArgumentException("Unsupported file type");
         }
 
         System.out.println("Number of classes: " + analyzer.countClasses());
         System.out.println("Number of methods: " + analyzer.countMethods());
+        System.out.println(analyzer.getLineCount());
     }
 }

@@ -6,23 +6,22 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class TXTFile {
+    int lineCount = 0;
+    int wordCount = 0;
+    int charCount = 0;
 
     public static void main(String[] args) {
-        File file = new File("C:\\Users\\Miguel\\Downloads\\1.txt");
-        getStatistics(file);
+        TXTFile txtFile = new TXTFile(new File("C:\\Users\\Miguel\\Downloads\\1.txt"));
+        System.out.println(txtFile.getCharCount() + " " + txtFile.getWordCount() + " " + txtFile.getLineCount());
     }
 
-    public static void getStatistics(File file) {
-        int lineCount = 0;
-        int wordCount = 0;
-        int charCount = 0;
+    public TXTFile (File file) {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 lineCount++;
                 charCount += line.length();
-
 
                 String cleanedLine = line.replaceAll("[^a-zA-Z\\s]", "");
 
@@ -32,9 +31,17 @@ public class TXTFile {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
-        System.out.println("Line Count: " + lineCount);
-        System.out.println("Word Count: " + wordCount);
-        System.out.println("Character Count: " + charCount);
+    public int getCharCount() {
+        return charCount;
+    }
+
+    public int getLineCount() {
+        return lineCount;
+    }
+
+    public int getWordCount() {
+        return wordCount;
     }
 }

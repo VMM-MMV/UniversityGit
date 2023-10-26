@@ -1,4 +1,4 @@
-package com.project.ngit;
+package com.project.ngit.Files;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -32,7 +32,6 @@ public abstract class GeneralFile {
     }
 
     protected static String getPrettyFileNameAndExtension(Path path) {
-        String fileName = path.getFileName().toString();
-        return fileName;
+        return path.getFileName().toString();
     }
 }

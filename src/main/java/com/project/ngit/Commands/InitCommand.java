@@ -1,6 +1,6 @@
-package com.project.ngit;
+package com.project.ngit.Commands;
 
-import static com.project.ngit.DgitApplication.makeFolder;
+import static com.project.ngit.Commands.DgitApplication.makeFolder;
 
 public class InitCommand {
     public static void execute(String repositoryPath) {

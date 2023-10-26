@@ -1,4 +1,4 @@
-package com.project.ngit;
+package com.project.ngit.Commands;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

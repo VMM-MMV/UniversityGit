@@ -1,4 +1,4 @@
-package com.project.ngit;
+package com.project.ngit.Files;
 
 import java.io.BufferedReader;
 import java.io.File;

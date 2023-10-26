@@ -8,12 +8,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class ImageFile extends GeneralFile{
-    private Dimension dimensions;
+    int width;
+    int height;
 
     public ImageFile(String imagePath) {
         if (!Files.exists(Paths.get(imagePath))) {
             System.out.println("No such path");
-            this.dimensions = new Dimension(-1, -1);
             return;
         }
 
@@ -24,23 +24,23 @@ public class ImageFile extends GeneralFile{
                 throw new IOException("Failed to read image file: " + imagePath);
             }
 
-            int width = image.getWidth();
-            int height = image.getHeight();
-
-            this.dimensions = new Dimension(width, height);
+            width = image.getWidth();
+            height = image.getHeight();
         } catch (IOException e) {
             e.printStackTrace();
-            this.dimensions = new Dimension(-1, -1);
         }
     }
 
-    public Dimension getDimensions() {
-        return this.dimensions;
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 
     public static void main(String[] args) {
-        ImageFile imageFile = new ImageFile("C:\\Users\\Miguel\\Downloads\\1.txt");
-        Dimension dimension = imageFile.getDimensions();
-        System.out.println(dimension.width + " x " + dimension.height);
+        ImageFile imageFile = new ImageFile("C:\\Users\\Miguel\\Downloads\\a.jpeg");
+        System.out.println(imageFile.getHeight() + " x " + imageFile.getWidth());
     }
 }

@@ -1,16 +1,18 @@
-package com.project.ngit.Files;
+package com.project.ngit.Files.CodeFiles;
+
+import com.project.ngit.Files.GeneralFile;
 
 import java.util.regex.*;
 import java.nio.file.*;
 import java.io.IOException;
 
-public abstract class CodeAnalyzer extends GeneralFile {
+public abstract class CodeFile extends GeneralFile {
     public abstract int getClassCount();
     public abstract int getMethodCount();
 
     protected String code;
 
-    public CodeAnalyzer(String filePath) throws IOException {
+    public CodeFile(String filePath) throws IOException {
         super(filePath);
         this.code = new String(Files.readAllBytes(Paths.get(filePath)));
     }

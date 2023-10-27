@@ -1,6 +1,9 @@
 package com.project.ngit.Commands;
 
 import com.project.ngit.Files.*;
+import com.project.ngit.Files.CodeFiles.CodeFile;
+import com.project.ngit.Files.CodeFiles.JavaCodeFile;
+import com.project.ngit.Files.CodeFiles.PythonCodeFile;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -9,7 +12,7 @@ public class InfoCommand {
 
     public static void execute(String repositoryPath, String file) throws IOException {
         String[] fileNameAndExtension = getFileNameAndExtension(file);
-        String filePath = repositoryPath +"\\"+ file;
+        String filePath = repositoryPath + "\\" + file;
         String extension = fileNameAndExtension[1];
 
         switch (extension) {
@@ -25,13 +28,13 @@ public class InfoCommand {
             }
 
             case "py" -> {
-                PythonCodeAnalyzer pythonFile = new PythonCodeAnalyzer(filePath);
+                PythonCodeFile pythonFile = new PythonCodeFile(filePath);
                 printFileInfo(pythonFile);
                 printCodeFileInfo(pythonFile);
             }
 
             case "java" -> {
-                JavaCodeAnalyzer javaFile = new JavaCodeAnalyzer(filePath);
+                JavaCodeFile javaFile = new JavaCodeFile(filePath);
                 printFileInfo(javaFile);
                 printCodeFileInfo(javaFile);
             }
@@ -44,7 +47,7 @@ public class InfoCommand {
         System.out.println("Modified at: " + file.getTimeOfModification());
     }
 
-    private static void printCodeFileInfo(CodeAnalyzer file) {
+    private static void printCodeFileInfo(CodeFile file) {
         System.out.println("Classes: " + file.getClassCount());
         System.out.println("Methods: " + file.getMethodCount());
         System.out.println("Lines: " + file.getLineCount());

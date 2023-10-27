@@ -1,12 +1,14 @@
-package com.project.ngit.Files;
+package com.project.ngit.Files.CodeFiles;
+
+import com.project.ngit.Files.CodeFiles.CodeFile;
 
 import java.io.IOException;
 
-public class JavaCodeAnalyzer extends CodeAnalyzer {
+public class JavaCodeFile extends CodeFile {
     private static final String CLASS_REGEX = "\\bclass\\s+";
     private static final String METHOD_REGEX = "\\b\\w+(?:<[^>]+>)?\\s+\\w+\\s*\\([^)]*\\)\\s*\\{";
 
-    public JavaCodeAnalyzer(String filePath) throws IOException {
+    public JavaCodeFile(String filePath) throws IOException {
         super(filePath);
     }
 

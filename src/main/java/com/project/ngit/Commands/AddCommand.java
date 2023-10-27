@@ -1,6 +1,6 @@
 package com.project.ngit.Commands;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
@@ -13,6 +13,10 @@ public class AddCommand {
     static String repositoryPath;
     static Map<String, String> existingData = new LinkedHashMap<>();
 
+//    public static void main(String[] args) {
+//        AddCommand.execute('');
+//    }
+
     public static void execute(String repositoryPath, String argument) {
         if (argument == null) {
             System.out.println("No argument provided for add command.");
@@ -22,14 +26,14 @@ public class AddCommand {
         AddCommand.repositoryPath = repositoryPath;
         ngitPath = Path.of(repositoryPath, ".ngit");
 
-        existingData = readExistingJsonData(ngitPath.resolve("index/changes.json"));
+        existingData = loadSerializedData(ngitPath.resolve("index/changes.ser"));
 
         if (argument.equals(".")) {
             processAllFilesInRepository();
         } else {
             processSingleFile(argument);
         }
-        saveToJsonFile(ngitPath.resolve("index/changes.json"), existingData);
+        saveSerializedData(ngitPath.resolve("index/changes.ser"), existingData);
     }
 
     private static void processAllFilesInRepository() {
@@ -51,39 +55,21 @@ public class AddCommand {
         existingData.put(path.toString(), lastModifiedTime.toString());
     }
 
-    private static Map<String, String> readExistingJsonData(Path filePath) {
-        Map<String, String> data = new LinkedHashMap<>();
+    private static Map<String, String> loadSerializedData(Path filePath) {
         if (!Files.exists(filePath)) {
-            return data;
+            return new LinkedHashMap<>();
         }
 
-        try {
-            String content = new String(Files.readAllBytes(filePath));
-            String[] pairs = content.replace("{", "").replace("}", "").split(",");
-            for (String pair : pairs) {
-                String[] keyValue = pair.split(":");
-                if (keyValue.length == 2) {
-                    data.put(keyValue[0].trim().replace("\"", ""), keyValue[1].trim().replace("\"", ""));
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read existing JSON data", e);
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath.toFile()))) {
+            return (Map<String, String>) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException("Failed to load serialized data", e);
         }
-        return data;
     }
 
-    private static void saveToJsonFile(Path filePath, Map<String, String> data) {
-        StringBuilder sb = new StringBuilder("{");
-        for (Map.Entry<String, String> entry : data.entrySet()) {
-            sb.append("\"").append(entry.getKey()).append("\":\"").append(entry.getValue()).append("\",");
-        }
-        if (!data.isEmpty()) {
-            sb.setLength(sb.length() - 1);  // remove last comma
-        }
-        sb.append("}");
-
-        try {
-            Files.write(filePath, sb.toString().getBytes());
+    private static void saveSerializedData(Path filePath, Map<String, String> data) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath.toFile()))) {
+            out.writeObject(data);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

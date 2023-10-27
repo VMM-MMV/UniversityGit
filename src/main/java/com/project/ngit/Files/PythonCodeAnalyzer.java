@@ -2,7 +2,7 @@ package com.project.ngit.Files;
 
 import java.io.IOException;
 
-class PythonCodeAnalyzer extends CodeAnalyzer {
+public class PythonCodeAnalyzer extends CodeAnalyzer {
     private static final String CLASS_REGEX = "\\bclass\\s+\\w+\\s*:";
     private static final String METHOD_REGEX = "\\bdef\\s+\\w+\\s*\\(";
 

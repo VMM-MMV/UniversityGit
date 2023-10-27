@@ -9,11 +9,6 @@ import java.nio.file.attribute.FileTime;
 import java.util.function.Function;
 
 public abstract class GeneralFile {
-
-    public static void main(String[] args) {
-        System.out.println(getPrettyFileNameAndExtension(Path.of("C:\\Users\\Miguel\\Downloads\\1.txt")));
-    }
-
     protected FileTime getCreatedFileTime(Path path) {
         return getFileTime(path, BasicFileAttributes::creationTime);
     }

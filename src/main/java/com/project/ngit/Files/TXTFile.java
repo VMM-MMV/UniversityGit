@@ -3,6 +3,7 @@ package com.project.ngit.Files;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class TXTFile extends GeneralFile {
@@ -10,18 +11,19 @@ public class TXTFile extends GeneralFile {
     private int wordCount;
     private int charCount;
 
-    public static void main(String[] args) {
-        TXTFile txtFile = null;
-        try {
-            txtFile = new TXTFile(new File("C:\\Users\\Miguel\\Downloads\\2.txt"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println(txtFile.getCharCount() + " " + txtFile.getWordCount() + " " + txtFile.getLineCount());
-    }
+//    public static void main(String[] args) {
+//        TXTFile txtFile = null;
+//        try {
+//            txtFile = new TXTFile("C:\\Users\\Miguel\\Downloads\\2.txt"));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        System.out.println(txtFile.getCharCount() + " " + txtFile.getWordCount() + " " + txtFile.getLineCount());
+//    }
 
-    public TXTFile(File file) throws IOException {
-        String code = new String(Files.readAllBytes(Paths.get(file.getPath())));
+    public TXTFile(String filePath) throws IOException {
+        Path path = Path.of(filePath);
+        String code = new String(Files.readAllBytes(path));
         charCount = code.length();
         lineCount = (int) code.lines().count();
 

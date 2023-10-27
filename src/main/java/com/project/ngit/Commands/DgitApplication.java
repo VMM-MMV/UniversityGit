@@ -12,12 +12,12 @@ import java.nio.file.attribute.BasicFileAttributes;
 public class DgitApplication {
 	final static String GLOBAL_REPOSITORY_NAME = System.getProperty("user.dir");
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		DgitApplication gitClone = new DgitApplication();
 		gitClone.processCommand(args);
 	}
 
-	private void processCommand(String[] input) {
+	private void processCommand(String[] input) throws IOException {
 		System.out.println(Arrays.toString(input));
 
 		if (input.length < 1) {return; }
@@ -28,6 +28,7 @@ public class DgitApplication {
 		switch (command) {
 			case "init" ->  InitCommand.execute(GLOBAL_REPOSITORY_NAME);
 			case "add" -> AddCommand.execute(GLOBAL_REPOSITORY_NAME, argument);
+			case "info" -> InfoCommand.execute(GLOBAL_REPOSITORY_NAME, argument);
 			default -> System.out.println("Unknown ngit command");
 		}
 	}

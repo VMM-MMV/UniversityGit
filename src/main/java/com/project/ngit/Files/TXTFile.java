@@ -1,10 +1,8 @@
 package com.project.ngit.Files;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class TXTFile extends GeneralFile {
     private int lineCount;
@@ -22,6 +20,7 @@ public class TXTFile extends GeneralFile {
 //    }
 
     public TXTFile(String filePath) throws IOException {
+        super(Path.of(filePath));
         Path path = Path.of(filePath);
         String code = new String(Files.readAllBytes(path));
         charCount = code.length();

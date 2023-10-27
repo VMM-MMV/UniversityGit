@@ -12,6 +12,7 @@ public class ImageFile extends GeneralFile{
     int height;
 
     public ImageFile(String imagePath) {
+        super(Path.of(imagePath));
         Path path = Path.of(imagePath);
         if (!Files.exists(Paths.get(imagePath))) {
             System.out.println("No such path");

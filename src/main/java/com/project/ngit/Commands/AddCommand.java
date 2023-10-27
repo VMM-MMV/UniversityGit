@@ -59,9 +59,9 @@ public class AddCommand {
 
         FileStatus fileStatus = existingData.get(path.toString());
         if (fileStatus == null) {
-            fileStatus = new FileStatus(path.toString(), lastModifiedTime.toString(), lastModifiedTime.toString());
+            fileStatus = new FileStatus(lastModifiedTime.toString(), lastModifiedTime.toString());
         } else {
-            fileStatus = new FileStatus(fileStatus.path(), lastModifiedTime.toString(), fileStatus.initialTimestamp());
+            fileStatus = new FileStatus(lastModifiedTime.toString(), fileStatus.initialTimestamp());
         }
         existingData.put(path.toString(), fileStatus);
     }

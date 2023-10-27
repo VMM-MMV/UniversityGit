@@ -1,25 +1,20 @@
 package com.project.ngit.Commands;
 
 import java.io.IOException;
-import java.nio.file.FileVisitOption;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
-import java.util.EnumSet;
 import java.util.Map;
 
 public class StatusCommand {
+
     public static void execute(String repositoryPath) {
         Path ngitPath = Path.of(repositoryPath, ".ngit");
-        Map<String, String> serializedData = AddCommand.loadSerializedData(ngitPath.resolve("index/changes.ser"));
+        Map<String, FileStatus> serializedData = AddCommand.loadSerializedData(ngitPath.resolve("index/changes.ser"));
 
-        for (Map.Entry<String, String> entry : serializedData.entrySet()) {
-            if (entry.getKey().endsWith("-initial")) continue; // Skip initial timestamps when iterating
-
+        for (Map.Entry<String, FileStatus> entry : serializedData.entrySet()) {
             String filePath = entry.getKey();
-            String activeTimestamp = entry.getValue();
-            String initialTimestamp = serializedData.get(filePath + "-initial");
+            FileStatus fileStatus = entry.getValue();
 
             Path actualPath = Path.of(repositoryPath, filePath);
             if (Files.exists(actualPath)) {
@@ -31,10 +26,12 @@ public class StatusCommand {
                     continue;
                 }
 
-                if (initialTimestamp.equals(activeTimestamp)) {
+
+
+                if (fileStatus.initialTimestamp().equals(fileStatus.activeTimestamp())) {
                     System.out.println(actualPath + " is a new file.");
-                } else if (!activeTimestamp.equals(currentModifiedTime.toString())) {
-                    System.out.println(actualPath + " has been modified. Stored: " + activeTimestamp + " Current: " + currentModifiedTime);
+                } else if (!fileStatus.activeTimestamp().equals(currentModifiedTime.toString())) {
+                    System.out.println(actualPath + " has been modified. Stored: " + fileStatus.activeTimestamp() + " Current: " + currentModifiedTime);
                 }
             } else {
                 System.out.println(actualPath + " no longer exists.");

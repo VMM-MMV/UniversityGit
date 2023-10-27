@@ -52,10 +52,16 @@ public class AddCommand {
     private static void processPath(Path path) {
         FileTime lastModifiedTime = DgitApplication.getLastModifiedTime(path);
         System.out.println(path + " last modified: " + lastModifiedTime);
-        existingData.put(path.toString(), lastModifiedTime.toString());
+
+        String storedInitialTimestamp = existingData.getOrDefault(path.toString() + "-initial", null);
+        if (storedInitialTimestamp == null) {
+            existingData.put(path.toString() + "-initial", lastModifiedTime.toString()); // Store initial timestamp if not present
+        }
+        existingData.put(path.toString(), lastModifiedTime.toString()); // Always update the active timestamp
     }
 
-    private static Map<String, String> loadSerializedData(Path filePath) {
+
+    static Map<String, String> loadSerializedData(Path filePath) {
         if (!Files.exists(filePath)) {
             return new LinkedHashMap<>();
         }

@@ -19,6 +19,9 @@ public class InfoCommand {
             case "txt" -> {
                 TXTFile txtFile = new TXTFile(filePath);
                 printFileInfo(txtFile);
+                System.out.println("Lines: " + txtFile.getLineCount());
+                System.out.println("Words: " + txtFile.getWordCount());
+                System.out.println("Chars: " + txtFile.getCharCount());
             }
 
             case "jpg", "jpeg", "png", "bmp", "gif" -> {

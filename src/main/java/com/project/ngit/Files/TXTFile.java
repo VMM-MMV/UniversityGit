@@ -1,35 +1,33 @@
 package com.project.ngit.Files;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-public class TXTFile extends GeneralFile{
-    int lineCount = 0;
-    int wordCount = 0;
-    int charCount = 0;
+public class TXTFile extends GeneralFile {
+    private int lineCount;
+    private int wordCount;
+    private int charCount;
 
     public static void main(String[] args) {
-        TXTFile txtFile = new TXTFile(new File("C:\\Users\\Miguel\\Downloads\\1.txt"));
+        TXTFile txtFile = null;
+        try {
+            txtFile = new TXTFile(new File("C:\\Users\\Miguel\\Downloads\\2.txt"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println(txtFile.getCharCount() + " " + txtFile.getWordCount() + " " + txtFile.getLineCount());
     }
 
-    public TXTFile(File file) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                lineCount++;
-                charCount += line.length();
+    public TXTFile(File file) throws IOException {
+        String code = new String(Files.readAllBytes(Paths.get(file.getPath())));
+        charCount = code.length();
+        lineCount = (int) code.lines().count();
 
-                String cleanedLine = line.replaceAll("[^a-zA-Z\\s]", "");
-
-                String[] words = cleanedLine.split("\\s+");
-                wordCount += words.length;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String cleanedCode = code.replaceAll("[^a-zA-Z\\s]", "");
+        String[] words = cleanedCode.split("\\s+");
+        wordCount = words.length;
     }
 
     public int getCharCount() {
@@ -44,3 +42,4 @@ public class TXTFile extends GeneralFile{
         return wordCount;
     }
 }
+

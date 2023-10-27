@@ -6,10 +6,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public class InfoCommand {
-//
-//    public static void main(String[] args) throws IOException {
-//        InfoCommand.execute("C:\\Users\\Miguel\\IdeaProjects\\UniversityGit", "1.txt");
-//    }
 
     public static void execute(String repositoryPath, String file) throws IOException {
         String[] fileNameAndExtension = getFileNameAndExtension(file);
@@ -19,34 +15,42 @@ public class InfoCommand {
         switch (extension) {
             case "txt" -> {
                 TXTFile txtFile = new TXTFile(filePath);
-                System.out.println(txtFile.getLineCount());
                 printFileInfo(txtFile);
             }
 
             case "jpg", "jpeg", "png", "bmp", "gif" -> {
                 ImageFile imageFile = new ImageFile(filePath);
                 printFileInfo(imageFile);
+                System.out.println("Size: " + imageFile.getHeight() + "x" + imageFile.getWidth());
             }
 
             case "py" -> {
                 PythonCodeAnalyzer pythonFile = new PythonCodeAnalyzer(filePath);
-                System.out.println(pythonFile.getMethodCount());
                 printFileInfo(pythonFile);
+                printCodeFileInfo(pythonFile);
             }
 
             case "java" -> {
-                JavaCodeAnalyzer javaCodeAnalyzer = new JavaCodeAnalyzer(filePath);
-                System.out.println(javaCodeAnalyzer.getMethodCount());
-                printFileInfo(javaCodeAnalyzer);
+                JavaCodeAnalyzer javaFile = new JavaCodeAnalyzer(filePath);
+                printFileInfo(javaFile);
+                printCodeFileInfo(javaFile);
             }
         }
     }
 
     private static void printFileInfo(GeneralFile file) {
-        System.out.println("File: " + file.getNameAndExtension() + " Created at: " + file.getTimeOfCreation() + " Modified at: " + file.getTimeOfModification());
+        System.out.println("File: " + file.getNameAndExtension());
+        System.out.println("Created at: " + file.getTimeOfCreation());
+        System.out.println("Modified at: " + file.getTimeOfModification());
     }
 
-    protected static String[] getFileNameAndExtension(String file) {
+    private static void printCodeFileInfo(CodeAnalyzer file) {
+        System.out.println("Classes: " + file.getClassCount());
+        System.out.println("Methods: " + file.getMethodCount());
+        System.out.println("Lines: " + file.getLineCount());
+    }
+
+    private static String[] getFileNameAndExtension(String file) {
         String filenameStr = Path.of(file).getFileName().toString();
         String[] parts = filenameStr.split("\\.(?=[^\\.]+$)");
         if (parts.length == 2) {

@@ -11,7 +11,7 @@ public abstract class CodeAnalyzer extends GeneralFile {
     protected String code;
 
     public CodeAnalyzer(String filePath) throws IOException {
-        super(Path.of(filePath));
+        super(filePath);
         this.code = new String(Files.readAllBytes(Paths.get(filePath)));
     }
 
@@ -29,29 +29,4 @@ public abstract class CodeAnalyzer extends GeneralFile {
     public int getLineCount() {
         return (int) code.lines().count();
     }
-
-//    public static void main(String[] args) {
-//        String filePath = "C:\\Users\\Miguel\\Downloads\\1.java";  // Replace with your file path
-//        CodeAnalyzer analyzer;
-//
-//        if (filePath.endsWith(".py")) {
-//            try {
-//                analyzer = new PythonCodeAnalyzer(filePath);
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        } else if (filePath.endsWith(".java")) {
-//            try {
-//                analyzer = new JavaCodeAnalyzer(filePath);
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        } else {
-//            throw new IllegalArgumentException("Unsupported file type");
-//        }
-
-//        System.out.println("Number of classes: " + analyzer.getClassCount());
-//        System.out.println("Number of methods: " + analyzer.getMethodCount());
-//        System.out.println(analyzer.getLineCount());
-//    }
 }

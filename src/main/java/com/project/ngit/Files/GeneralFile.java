@@ -9,11 +9,12 @@ import java.nio.file.attribute.FileTime;
 import java.util.function.Function;
 
 public abstract class GeneralFile {
-    private FileTime timeOfCreation;
-    private FileTime timeOfModification;
-    private String nameAndExtension;
+    private final FileTime timeOfCreation;
+    private final FileTime timeOfModification;
+    private final String nameAndExtension;
 
-    public GeneralFile(Path path) {
+    public GeneralFile(String strPath) {
+        Path path = Path.of(strPath);
         this.timeOfCreation = getCreatedFileTime(path);
         this.timeOfModification = getLastModifiedFileTime(path);
         this.nameAndExtension = getPrettyFileNameAndExtension(path);

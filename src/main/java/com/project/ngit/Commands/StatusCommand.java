@@ -17,34 +17,40 @@ public class StatusCommand {
             FileStatus fileStatus = entry.getValue();
 
             Path actualPath = Path.of(filePath);
-            if (Files.exists(actualPath)) {
-                FileTime currentModifiedTime;
-                try {
-                    currentModifiedTime = Files.getLastModifiedTime(actualPath);
-                } catch (IOException e) {
-                    System.out.println("Error getting last modified time for: " + actualPath);
-                    continue;
-                }
-
-                String pathStr = actualPath.toString();
-                String[] parts = pathStr.split("UniversityGit");
-                String relativePath;
-                if (parts.length > 1) {
-                    relativePath = parts[1];
-                    System.out.println(relativePath);
-                } else {
-                    relativePath = parts[0];
-                }
-
-                if (fileStatus.initialTimestamp().equals(fileStatus.activeTimestamp())) {
-                    System.out.println(relativePath + " is a new file.");
-                } else if (!fileStatus.activeTimestamp().equals(currentModifiedTime.toString())) {
-                    System.out.println(relativePath + " has been modified. Stored: " + fileStatus.activeTimestamp() + " Current: " + currentModifiedTime);
-                }
-
-            } else {
-                System.out.println(actualPath + " no longer exists.");
+            if (!Files.exists(actualPath)) {
+                System.out.println(actualPath + " Is deleted");
+                continue;
             }
+
+            if (Files.isDirectory(actualPath)) {
+                continue;
+            }
+
+            FileTime currentModifiedTime;
+            try {
+                currentModifiedTime = Files.getLastModifiedTime(actualPath);
+            } catch (IOException e) {
+                System.out.println("Error getting last modified time for: " + actualPath);
+                continue;
+            }
+
+            String relativePath = getRelativePath(actualPath);
+
+            if (fileStatus.initialTimestamp().equals(fileStatus.activeTimestamp())) {
+                System.out.println(relativePath + " is a new file.");
+            } else if (!fileStatus.activeTimestamp().equals(currentModifiedTime.toString())) {
+                System.out.println(relativePath + " has been modified.");
+            }
+        }
+    }
+
+    private static String getRelativePath(Path path) {
+        String pathStr = path.toString();
+        String[] parts = pathStr.split("UniversityGit\\\\");
+        if (parts.length > 1) {
+            return parts[1];
+        } else {
+            return parts[0];
         }
     }
 }

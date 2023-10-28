@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class StatusCommand {
@@ -34,7 +36,8 @@ public class StatusCommand {
                 continue;
             }
 
-            String relativePath = getRelativePath(actualPath);
+            String repoCore = getNameOfRepoCore(String.valueOf(ngitPath));
+            String relativePath = getRelativePath(filePath, repoCore);
 
             if (fileStatus.initialTimestamp().equals(fileStatus.activeTimestamp())) {
                 System.out.println(relativePath + " is a new file.");
@@ -44,13 +47,18 @@ public class StatusCommand {
         }
     }
 
-    private static String getRelativePath(Path path) {
-        String pathStr = path.toString();
-        String[] parts = pathStr.split("UniversityGit\\\\");
+    private static String getRelativePath(String path, String repoCore) {
+        String[] parts = path.split(repoCore + "\\\\");
         if (parts.length > 1) {
             return parts[1];
         } else {
             return parts[0];
         }
+    }
+
+    private static String getNameOfRepoCore(String path) {
+        List<String> parts = List.of(path.split("\\\\"));
+        int repoIndex = parts.indexOf(".ngit");
+        return parts.get(repoIndex - 1);
     }
 }

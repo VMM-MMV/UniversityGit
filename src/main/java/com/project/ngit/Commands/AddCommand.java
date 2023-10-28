@@ -29,6 +29,7 @@ public class AddCommand {
         } else {
             processSingleFile(argument);
         }
+
         saveSerializedData(ngitPath.resolve("index/changes.ser"), existingData);
     }
 
@@ -46,6 +47,11 @@ public class AddCommand {
     }
 
     private static void processPath(Path path) {
+        String pathString = path.toString();
+        if (pathString.contains(".ngit")) {
+            return;
+        }
+
         FileTime lastModifiedTime;
         try {
             lastModifiedTime = Files.getLastModifiedTime(path);
@@ -87,10 +93,16 @@ public class AddCommand {
     }
 
     private static void saveSerializedData(Path filePath, List<FileStatus> data) {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath.toFile()))) {
-            out.writeObject(data);
+        try {
+            Files.createDirectories(filePath.getParent());
+
+            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath.toFile()))) {
+                out.writeObject(data);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to create directories", e);
         }
     }
 }

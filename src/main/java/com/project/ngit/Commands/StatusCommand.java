@@ -16,7 +16,7 @@ public class StatusCommand {
             Path actualPath = Path.of(filePath);
 
             if (!Files.exists(actualPath)) {
-                System.out.println(actualPath + " Is deleted");
+                System.out.println(actualPath + " is deleted");
                 continue;
             }
 

@@ -4,21 +4,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class StatusCommand {
-
     public static void execute(String repositoryPath) {
         Path ngitPath = Path.of(repositoryPath, ".ngit");
-        Map<String, FileStatus> serializedData = AddCommand.loadSerializedData(ngitPath.resolve("index/changes.ser"));
+        List<FileStatus> serializedData = AddCommand.loadSerializedData(ngitPath.resolve("index/changes.ser"));
 
-        for (Map.Entry<String, FileStatus> entry : serializedData.entrySet()) {
-            String filePath = entry.getKey();
-            FileStatus fileStatus = entry.getValue();
-
+        for (FileStatus fileStatus : serializedData) {
+            String filePath = fileStatus.path();
             Path actualPath = Path.of(filePath);
+
             if (!Files.exists(actualPath)) {
                 System.out.println(actualPath + " Is deleted");
                 continue;
@@ -39,7 +35,7 @@ public class StatusCommand {
             String repoCore = getNameOfRepoCore(String.valueOf(ngitPath));
             String relativePath = getRelativePath(filePath, repoCore);
 
-            if (fileStatus.initialTimestamp().equals(fileStatus.activeTimestamp())) {
+            if (fileStatus.initialTimestamp().equals(fileStatus.activeTimestamp()) && fileStatus.activeTimestamp().equals(currentModifiedTime.toString())) {
                 System.out.println(relativePath + " is a new file.");
             } else if (!fileStatus.activeTimestamp().equals(currentModifiedTime.toString())) {
                 System.out.println(relativePath + " has been modified.");

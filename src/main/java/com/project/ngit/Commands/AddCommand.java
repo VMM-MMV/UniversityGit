@@ -4,15 +4,14 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class AddCommand {
     static Path ngitPath;
     static String repositoryPath;
-    static Map<String, FileStatus> existingData = new HashMap<>();
+    static List<FileStatus> existingData = new ArrayList<>();
 
     public static void execute(String repositoryPath, String argument) {
         if (argument == null) {
@@ -42,7 +41,7 @@ public class AddCommand {
     }
 
     private static void processSingleFile(String argument) {
-        Path filePath = ngitPath.resolve(argument);
+        Path filePath = Path.of(repositoryPath).resolve(argument);
         processPath(filePath);
     }
 
@@ -55,30 +54,39 @@ public class AddCommand {
             return;
         }
 
-        System.out.println(path + " last modified: " + lastModifiedTime);
-
-        FileStatus fileStatus = existingData.get(path.toString());
+        FileStatus fileStatus = findFileStatusByPath(path.toString());
         if (fileStatus == null) {
-            fileStatus = new FileStatus(lastModifiedTime.toString(), lastModifiedTime.toString());
+            fileStatus = new FileStatus(path.toString(), lastModifiedTime.toString(), lastModifiedTime.toString());
+            existingData.add(fileStatus);
         } else {
-            fileStatus = new FileStatus(lastModifiedTime.toString(), fileStatus.initialTimestamp());
+            int index = existingData.indexOf(fileStatus);
+            fileStatus = new FileStatus(path.toString(), lastModifiedTime.toString(), fileStatus.initialTimestamp());
+            existingData.set(index, fileStatus);
         }
-        existingData.put(path.toString(), fileStatus);
     }
 
-    static Map<String, FileStatus> loadSerializedData(Path filePath) {
+    private static FileStatus findFileStatusByPath(String path) {
+        for (FileStatus fileStatus : existingData) {
+            if (fileStatus.path().equals(path)) {
+                return fileStatus;
+            }
+        }
+        return null;
+    }
+
+    static List<FileStatus> loadSerializedData(Path filePath) {
         if (!Files.exists(filePath)) {
-            return new LinkedHashMap<>();
+            return new ArrayList<>();
         }
 
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath.toFile()))) {
-            return (Map<String, FileStatus>) in.readObject();
+            return (List<FileStatus>) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException("Failed to load serialized data", e);
         }
     }
 
-    private static void saveSerializedData(Path filePath, Map<String, FileStatus> data) {
+    private static void saveSerializedData(Path filePath, List<FileStatus> data) {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath.toFile()))) {
             out.writeObject(data);
         } catch (IOException e) {

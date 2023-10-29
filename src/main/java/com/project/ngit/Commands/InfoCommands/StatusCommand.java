@@ -1,4 +1,6 @@
-package com.project.ngit.Commands;
+package com.project.ngit.Commands.InfoCommands;
+
+import com.project.ngit.DataBase.DataBase;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,7 +12,7 @@ import java.util.concurrent.*;
 public class StatusCommand {
     public static void execute(String repositoryPath) {
         Path ngitPath = Path.of(repositoryPath, ".ngit");
-        List<FileStatus> serializedData = AddCommand.loadSerializedData(ngitPath.resolve("index/changes.ser"));
+        List<FileStatus> serializedData = DataBase.loadSerializedData(ngitPath.resolve("index/changes.ser"));
 
         ConcurrentLinkedQueue<FileStatus> fileStatusQueue = new ConcurrentLinkedQueue<>(serializedData);
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());

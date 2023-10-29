@@ -1,4 +1,4 @@
-package com.project.ngit.Commands;
+package com.project.ngit.Commands.InfoCommands;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -20,7 +20,9 @@ public class ConstatCommand {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             scheduler.shutdown();
             try {
-                scheduler.awaitTermination(5, TimeUnit.SECONDS);
+                if (!scheduler.awaitTermination(5, TimeUnit.SECONDS)) {
+                    System.err.println("Scheduler did not terminate in the allotted time.");
+                }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

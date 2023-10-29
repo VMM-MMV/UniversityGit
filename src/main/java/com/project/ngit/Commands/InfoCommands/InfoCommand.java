@@ -1,4 +1,4 @@
-package com.project.ngit.Commands;
+package com.project.ngit.Commands.InfoCommands;
 
 import com.project.ngit.Files.*;
 import com.project.ngit.Files.CodeFiles.CodeFile;

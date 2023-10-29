@@ -1,4 +1,7 @@
-package com.project.ngit.Commands;
+package com.project.ngit.Commands.CreatorCommands;
+
+import com.project.ngit.Commands.InfoCommands.FileStatus;
+import com.project.ngit.DataBase.DataBase;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -10,7 +13,7 @@ public class CommitCommand {
 
     public static void execute(String repositoryPath) {
         Path ngitPath = Path.of(repositoryPath, ".ngit");
-        List<FileStatus> oldSerializedData = AddCommand.loadSerializedData(ngitPath.resolve("index/changes.ser"));
+        List<FileStatus> oldSerializedData = DataBase.loadSerializedData(ngitPath.resolve("index/changes.ser"));
         List<FileStatus> newSerializedData = new ArrayList<>();
 
         for (FileStatus fileStatus : oldSerializedData) {
@@ -37,7 +40,6 @@ public class CommitCommand {
             );
             newSerializedData.add(updatedFileStatus);
         }
-
-        AddCommand.saveSerializedData(ngitPath.resolve("index/changes.ser"), newSerializedData);
+        DataBase.saveSerializedData(ngitPath.resolve("index/changes.ser"), newSerializedData);
     }
 }

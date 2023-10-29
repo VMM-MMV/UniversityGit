@@ -1,4 +1,7 @@
-package com.project.ngit.Commands;
+package com.project.ngit.Commands.CreatorCommands;
+
+import com.project.ngit.Commands.InfoCommands.FileStatus;
+import com.project.ngit.DataBase.DataBase;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -22,7 +25,7 @@ public class AddCommand {
         repositoryPath = pathOfRepository;
         ngitPath = Path.of(repositoryPath, ".ngit");
 
-        existingData = loadSerializedData(ngitPath.resolve("index/changes.ser"));
+        existingData = DataBase.loadSerializedData(ngitPath.resolve("index/changes.ser"));
 
         if (argument.equals(".")) {
             processAllFilesInRepository();
@@ -30,7 +33,7 @@ public class AddCommand {
             processSingleFile(argument);
         }
 
-        saveSerializedData(ngitPath.resolve("index/changes.ser"), existingData);
+        DataBase.saveSerializedData(ngitPath.resolve("index/changes.ser"), existingData);
     }
 
     private static void processAllFilesInRepository() {
@@ -80,29 +83,4 @@ public class AddCommand {
         return null;
     }
 
-    static List<FileStatus> loadSerializedData(Path filePath) {
-        if (!Files.exists(filePath)) {
-            return new ArrayList<>();
-        }
-
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath.toFile()))) {
-            return (List<FileStatus>) in.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException("Failed to load serialized data", e);
-        }
-    }
-
-    static void saveSerializedData(Path filePath, List<FileStatus> data) {
-        try {
-            Files.createDirectories(filePath.getParent());
-
-            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath.toFile()))) {
-                out.writeObject(data);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to create directories", e);
-        }
-    }
 }

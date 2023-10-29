@@ -1,13 +1,17 @@
-package com.project.ngit.Commands;
+package com.project.ngit;
+
+import com.project.ngit.Commands.CreatorCommands.CommitCommand;
+import com.project.ngit.Commands.CreatorCommands.AddCommand;
+import com.project.ngit.Commands.CreatorCommands.InitCommand;
+import com.project.ngit.Commands.InfoCommands.ConstatCommand;
+import com.project.ngit.Commands.InfoCommands.InfoCommand;
+import com.project.ngit.Commands.InfoCommands.StatusCommand;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileTime;
 import java.util.Arrays;
-import java.nio.file.attribute.BasicFileAttributes;
 
 public class DgitApplication {
 	final static String GLOBAL_REPOSITORY_NAME = System.getProperty("user.dir");
@@ -36,16 +40,7 @@ public class DgitApplication {
 		}
 	}
 
-	protected static FileTime getLastModifiedTime(Path path) {
-		try {
-			BasicFileAttributes attrs = Files.readAttributes(path, BasicFileAttributes.class);
-			return attrs.lastModifiedTime();
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
-	}
-
-	protected static void makeFolder(String folderName, String repositoryPath) {
+	public static void makeFolder(String folderName, String repositoryPath) {
 		Path dirPath = Paths.get(repositoryPath + "/" + folderName);
 
 		if (directoryExists(dirPath)) {

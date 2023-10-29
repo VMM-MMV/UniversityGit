@@ -1,4 +1,4 @@
-package com.project.ngit.Commands;
+package com.project.ngit.Commands.InfoCommands;
 
 import java.io.Serializable;
 

@@ -13,7 +13,7 @@ public class ConstatCommand {
             return;
         }
 
-        scheduler = Executors.newScheduledThreadPool(1);
+        scheduler = Executors.newScheduledThreadPool(10);
         Runnable statusTask = () -> StatusCommand.execute(repositoryPath);
         scheduler.scheduleAtFixedRate(statusTask, 0, 5, TimeUnit.SECONDS);
 

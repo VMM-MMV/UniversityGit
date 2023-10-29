@@ -13,13 +13,13 @@ public class AddCommand {
     static String repositoryPath;
     static List<FileStatus> existingData = new ArrayList<>();
 
-    public static void execute(String repositoryPath, String argument) {
+    public static void execute(String pathOfRepository, String argument) {
         if (argument == null) {
             System.out.println("No argument provided for add command.");
             return;
         }
 
-        AddCommand.repositoryPath = repositoryPath;
+        repositoryPath = pathOfRepository;
         ngitPath = Path.of(repositoryPath, ".ngit");
 
         existingData = loadSerializedData(ngitPath.resolve("index/changes.ser"));

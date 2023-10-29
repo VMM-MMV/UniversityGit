@@ -29,7 +29,6 @@ public class CommitCommand {
                 continue;
             }
 
-            // Create a new FileStatus with the updated active timestamp
             FileStatus updatedFileStatus = new FileStatus(
                     filePath,
                     currentModifiedTime.toString(),
@@ -39,7 +38,6 @@ public class CommitCommand {
             newSerializedData.add(updatedFileStatus);
         }
 
-        // Save the updated serialized data
         AddCommand.saveSerializedData(ngitPath.resolve("index/changes.ser"), newSerializedData);
     }
 }

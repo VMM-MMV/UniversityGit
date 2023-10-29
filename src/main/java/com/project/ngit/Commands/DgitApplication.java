@@ -31,6 +31,7 @@ public class DgitApplication {
 			case "info" -> InfoCommand.execute(GLOBAL_REPOSITORY_NAME, argument);
 			case "status" -> StatusCommand.execute(GLOBAL_REPOSITORY_NAME);
 			case "commit" -> CommitCommand.execute(GLOBAL_REPOSITORY_NAME);
+			case "constat" -> ConstatCommand.execute(GLOBAL_REPOSITORY_NAME);
 			default -> System.out.println("Unknown ngit command");
 		}
 	}

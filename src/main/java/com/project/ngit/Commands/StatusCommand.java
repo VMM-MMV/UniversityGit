@@ -35,7 +35,7 @@ public class StatusCommand {
             String repoCore = getNameOfRepoCore(String.valueOf(ngitPath));
             String relativePath = getRelativePath(filePath, repoCore);
 
-            if (fileStatus.initialTimestamp().equals(fileStatus.activeTimestamp()) && fileStatus.activeTimestamp().equals(currentModifiedTime.toString())) {
+            if (!fileStatus.isCommitted() && fileStatus.initialTimestamp().equals(fileStatus.activeTimestamp()) && fileStatus.activeTimestamp().equals(currentModifiedTime.toString())) {
                 System.out.println(relativePath + " is a new file.");
             } else if (!fileStatus.activeTimestamp().equals(currentModifiedTime.toString())) {
                 System.out.println(relativePath + " has been modified.");

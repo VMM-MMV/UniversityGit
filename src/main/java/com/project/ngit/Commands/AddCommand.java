@@ -62,11 +62,11 @@ public class AddCommand {
 
         FileStatus fileStatus = findFileStatusByPath(path.toString());
         if (fileStatus == null) {
-            fileStatus = new FileStatus(path.toString(), lastModifiedTime.toString(), lastModifiedTime.toString());
+            fileStatus = new FileStatus(path.toString(), lastModifiedTime.toString(), lastModifiedTime.toString(), false);
             existingData.add(fileStatus);
         } else {
             int index = existingData.indexOf(fileStatus);
-            fileStatus = new FileStatus(path.toString(), lastModifiedTime.toString(), fileStatus.initialTimestamp());
+            fileStatus = new FileStatus(path.toString(), lastModifiedTime.toString(), fileStatus.initialTimestamp(), false);
             existingData.set(index, fileStatus);
         }
     }
@@ -92,7 +92,7 @@ public class AddCommand {
         }
     }
 
-    private static void saveSerializedData(Path filePath, List<FileStatus> data) {
+    static void saveSerializedData(Path filePath, List<FileStatus> data) {
         try {
             Files.createDirectories(filePath.getParent());
 
